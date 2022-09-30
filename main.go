@@ -3,12 +3,14 @@ package main
 import (
 	"html/template"
 	"net/http"
+
+	"github.com/dartweydr-wq/project_go/pkg"
 )
 
 type User struct {
 	Name  string
 	Age   uint16
-	Money int
+	money int
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -28,5 +30,6 @@ func handleReq() {
 }
 
 func main() {
-	handleReq()
+	//handleReq()
+	pkg.ConnectionDb()
 }
