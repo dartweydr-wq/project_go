@@ -8,8 +8,8 @@ import (
 )
 
 type User struct {
-	Name string
-	Age  uint16
+	Name string `json:"name"`
+	Age  uint16 `json:"age"`
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
