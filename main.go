@@ -8,9 +8,8 @@ import (
 )
 
 type User struct {
-	Name  string
-	Age   uint16
-	money int
+	Name string
+	Age  uint16
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -19,7 +18,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 
 func contacts(w http.ResponseWriter, r *http.Request) {
-	tmpl, _ := template.ParseFiles("templates/home.html") // #TODO обработать ошибки
+	tmpl, _ := template.ParseFiles("templates/contacts.html") // #TODO обработать ошибки
 	tmpl.Execute(w, nil)
 }
 
