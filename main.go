@@ -14,7 +14,7 @@ type User struct {
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/home.html") // #TODO обработать ошибки
+	tmpl, err := template.ParseFiles("templates/home.html")
 
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
@@ -24,7 +24,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 
 func contacts(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/contacts.html") // #TODO обработать ошибки
+	tmpl, err := template.ParseFiles("templates/contacts.html")
 
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
