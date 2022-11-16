@@ -23,8 +23,19 @@ func home(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "index", nil)
 }
 
+func create(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("templates/create.html", "templates/header.html", "templates/footer.html")
+
+	if err != nil {
+		fmt.Fprintf(w, err.Error())
+	}
+
+	tmpl.ExecuteTemplate(w, "create", nil)
+}
+
 func handleReq() {
 	http.HandleFunc("/", home)
+	http.HandleFunc("/create", create)
 	http.ListenAndServe(":8080", nil)
 }
 
