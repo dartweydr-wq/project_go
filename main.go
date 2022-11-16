@@ -14,7 +14,7 @@ type User struct {
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/home.html")
+	tmpl, err := template.ParseFiles("templates/home.html", "templates/header.html", "templates/footer.html")
 
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
@@ -23,19 +23,8 @@ func home(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "index", nil)
 }
 
-func contacts(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/contacts.html")
-
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
-	}
-
-	tmpl.Execute(w, nil)
-}
-
 func handleReq() {
 	http.HandleFunc("/", home)
-	http.HandleFunc("/contacts/", contacts)
 	http.ListenAndServe(":8080", nil)
 }
 
