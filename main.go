@@ -6,6 +6,8 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/gorilla/mux"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -15,6 +17,7 @@ type Article struct {
 }
 
 var posts = []Article{}
+var showPost = Article{}
 
 func home(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("templates/home.html", "templates/header.html", "templates/footer.html")
@@ -90,10 +93,20 @@ func save_article(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func show_post(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	//w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "ID: %v\n", vars["id"])
+}
+
 func handleReq() {
-	http.HandleFunc("/", home)
-	http.HandleFunc("/create", create)
-	http.HandleFunc("/save_article", save_article)
+	rtr := mux.NewRouter()
+	rtr.HandleFunc("/", home).Methods("GET")
+	rtr.HandleFunc("/create", create).Methods("GET")
+	rtr.HandleFunc("/save_article", save_article).Methods("POST")
+	rtr.HandleFunc("/post/{id:[0-9]+}", show_post).Methods("GET")
+
+	http.Handle("/", rtr)
 	http.ListenAndServe(":8080", nil)
 }
 
