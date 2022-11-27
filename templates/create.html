@@ -1,13 +1,15 @@
 {{ define "create" }}
 {{ template "header" }}
 <main role="main">
-    <h1>Форма добавления</h1>
-    <form action="/save_article" method="post">
-        <input class="form-control" type="text" name="title" id="title" placeholder="Введите название статьи">
-        <textarea class="form-control" name="anons" id="anons" placeholder="Введите анонс статьи"></textarea>
-        <textarea class="form-control" name="full_text" id="full_text" placeholder="Введите текст статьи"></textarea>
-        <button class="btn btn-warning">Добавить</button>
-    </form>
+    <div class="container">
+        <h1>Форма добавления</h1>
+        <form action="/save_article" method="post">
+            <input class="form-control" type="text" name="title" id="title" placeholder="Введите название статьи">
+            <textarea class="form-control" name="anons" id="anons" placeholder="Введите анонс статьи"></textarea>
+            <textarea class="form-control" name="full_text" id="full_text" placeholder="Введите текст статьи"></textarea>
+            <button class="btn btn-warning">Добавить</button>
+        </form>
+    </div>
 </main>
 {{ template "footer" }}
 {{ end }}
