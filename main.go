@@ -9,10 +9,12 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type User struct {
-	Name string `json:"name"`
-	Age  uint16 `json:"age"`
+type Article struct {
+	Id                     uint16
+	Title, Anons, FullText string
 }
+
+var posts = []Article{}
 
 func home(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("templates/home.html", "templates/header.html", "templates/footer.html")
@@ -21,7 +23,34 @@ func home(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, err.Error())
 	}
 
-	tmpl.ExecuteTemplate(w, "index", nil)
+	db, err := sql.Open("mysql", "root:root@tcp(localhost:8889)/example_go")
+	defer db.Close()
+
+	if err != nil {
+		panic(err)
+	}
+
+	// выборка данных
+	res, err := db.Query("SELECT * FROM articles ")
+	defer res.Close()
+
+	if err != nil {
+		panic(err)
+	}
+
+	posts = []Article{}
+
+	for res.Next() {
+		var post Article
+		err = res.Scan(&post.Id, &post.Title, &post.Anons, &post.FullText)
+		if err != nil {
+			panic(err)
+		}
+
+		posts = append(posts, post)
+	}
+
+	tmpl.ExecuteTemplate(w, "index", posts)
 }
 
 func create(w http.ResponseWriter, r *http.Request) {
