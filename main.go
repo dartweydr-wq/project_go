@@ -95,8 +95,40 @@ func save_article(w http.ResponseWriter, r *http.Request) {
 
 func show_post(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	//w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "ID: %v\n", vars["id"])
+
+	tmpl, err := template.ParseFiles("templates/show.html", "templates/header.html", "templates/footer.html")
+
+	if err != nil {
+		fmt.Fprintf(w, err.Error())
+	}
+
+	db, err := sql.Open("mysql", "root:root@tcp(localhost:8889)/example_go")
+	defer db.Close()
+
+	if err != nil {
+		panic(err)
+	}
+
+	// выборка данных
+	res, err := db.Query(fmt.Sprintf("SELECT * FROM articles WHERE id = %s", vars["id"]))
+	defer res.Close()
+
+	if err != nil {
+		panic(err)
+	}
+
+	showPost = Article{}
+
+	for res.Next() {
+		var post Article
+		err = res.Scan(&post.Id, &post.Title, &post.Anons, &post.FullText)
+		if err != nil {
+			panic(err)
+		}
+		showPost = post
+	}
+
+	tmpl.ExecuteTemplate(w, "show", showPost)
 }
 
 func handleReq() {
